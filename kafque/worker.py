@@ -6,6 +6,7 @@ from __future__ import unicode_literals
 import importlib
 import json
 import logging
+import signal
 import sys
 import traceback
 
@@ -40,8 +41,18 @@ class Worker(object):
         exc_string = "".join(traceback.format_exception(*exc_info))
         return exc_string
 
+    def handle_signals(self):
+        def warm_shutdown(signum, frame):
+            self.logger.debug("Got signal {}".format(signum))
+            self.logger.warning("Warm shut down.")
+            raise SystemExit()
+
+        signal.signal(signal.SIGINT, warm_shutdown)
+        signal.signal(signal.SIGTERM, warm_shutdown)
+
     def run(self):
-        # TODO: handle SIGINT and SIGTERM
+        self.logger.info("kafque worker started.")
+        self.handle_signals()
 
         for message in self.consumer:
             job = self.dequeue(message)
