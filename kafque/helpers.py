@@ -3,6 +3,7 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
+import importlib
 import logging
 import time
 
@@ -17,3 +18,10 @@ def setup_logger(name, level):
     logger.addHandler(handler)
     logger.setLevel(level)
     return logger
+
+
+def callback_from_string(name):
+    module_name, attr = name.rsplit(".", 1)
+    module = importlib.import_module(module_name)
+    callback = getattr(module, attr)
+    return callback
