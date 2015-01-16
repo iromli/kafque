@@ -25,3 +25,7 @@ def callback_from_string(name):
     module = importlib.import_module(module_name)
     callback = getattr(module, attr)
     return callback
+
+
+def get_logging_level(name):
+    return getattr(logging, name.upper(), "WARNING")

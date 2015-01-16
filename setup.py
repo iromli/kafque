@@ -33,6 +33,7 @@ setup(
     zip_safe=False,
     install_requires=[
         "kafka-python",
+        "click",
     ],
     classifiers=[
         "Intended Audience :: Developers",
@@ -43,5 +44,9 @@ setup(
         "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.4",
-    ]
+    ],
+    entry_points="""
+        [console_scripts]
+        kafque-worker=kafque.cli:run_worker
+    """,
 )
